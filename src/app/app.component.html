@@ -1,1 +1,1 @@
-<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+<ckeditor #editor [editor]="Editor" (change)="onChange($event)" data="<p>Hello, world!</p>"></ckeditor>
