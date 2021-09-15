@@ -11,56 +11,49 @@ import * as ClassicEditor from 'src/app/aiCkEditor/build/ckeditor.js';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'med-editor';
   Editor = ClassicEditor;
-  selectedText: string;
+  selectedText: string = ''
+  editorLines: string[] = ["Hello, world!"]
 
   @ViewChild( 'editor' ) editorComponent: ElementRef;
 
   @HostListener('window: CustomDropdown', ['$event'])
-  onWriteAbout(e: any) {
+  onCustomDropdown(e: any) {
     if (this.selectedText) {
-      console.log(this.selectedText)
+      console.log('this text will going to backend --->       ', this.selectedText)
+      this.selectedText = '';
     }
   }
 
   @HostListener('window: textSelectionDone', ['$event'])
   onTextSelection(e: any) {
-    this.selectedText = e.selectedText.text;
+    let computedText = [];
+    
+    for (let i = e.selectedText.text.start[0]; i <= e.selectedText.text.end[0]; i++) {
+      if (i == e.selectedText.text.start[0] && i == e.selectedText.text.end[0]) {
+        computedText.push(this.editorLines[i].substring(e.selectedText.text.start[1], e.selectedText.text.end[1]))
+      } else if (i == e.selectedText.text.start[0]) {
+        computedText.push(this.editorLines[i].substring(e.selectedText.text.start[1], this.editorLines[i].length))
+      } else if (i == e.selectedText.text.end[0]) {
+        computedText.push(this.editorLines[i].substring(0, e.selectedText.text.end[1]))
+      }
+      else {
+        computedText.push(this.editorLines[i])
+      }
+    }
+    this.selectedText = computedText.join(' ');
+    
   }
 
   ngAfterViewInit() {
   }
 
   ngOnInit() {
-    // this.Editor.builtinPlugins.map( plugin => console.log(plugin.pluginName));
-    // console.log('--------------------------------------------------------');
-    
-    // this.Editor.builtinPlugins.map( plugin => console.log(plugin.pluginName));
-    // console.log(window)
-    // this.gw.tinyMCE.init({
-    //     selector: '#mytextarea'
-    //   })
-    // const editor = Jodit.make('#editor');
-    // editor.value = '<p>start</p>';
-
-    // tinymce.init({
-    //   selector: 'textarea#full-featured-non-premium',
-    //     toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    //     toolbar_sticky: true
-    // });
-
-    // tinymce.init({
-    //   selector: 'textarea#full-featured-non-premium',
-    //   toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    //   toolbar_sticky: true
-    //  });
-
-    // tinymce.init({
-    //   selector: '#mytextarea'
-    // });
   }
 
   public onChange( { editor }: ChangeEvent ) {
     const data = editor.getData();
-    // console.log( data );
-}
+    this.editorLines = data.split('p><p>').map(el => {
+      return el.replace(/<[^>]*>?/gm, '')
+    });
+  }
 }

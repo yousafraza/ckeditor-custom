@@ -112,10 +112,10 @@ export class TextSelection extends Plugin {
 	init() {
 		const editor = this.editor;
 
-		editor.editing.view.document.on('selectionChangeDone', (evt, data) => {
-			if (evt.source.selection._selection._ranges[0].end.offset != evt.source.selection._selection._ranges[0].start.offset) {
+		editor.model.document.selection.on("change:range", (data) => {
+			if (JSON.stringify(data.source._ranges[0].end.path) !== JSON.stringify(data.source._ranges[0].start.path)) {
 				let event = new CustomEvent("textSelectionDone");
-				event.selectedText = { text: data.domSelection.focusNode.data.substring(evt.source.selection._selection._ranges[0].start.offset, evt.source.selection._selection._ranges[0].end.offset) };
+				event.selectedText = { text: {end: data.source._ranges[0].end.path, start: data.source._ranges[0].start.path} };
 				window.dispatchEvent(event);
 			}
 		});
@@ -128,6 +128,19 @@ export class TotalWords extends Plugin {
 	}
 
 	init() {
+		const editor = this.editor;
+
+		editor.model.document.on( 'change:data', (evt, data) => {
+			// console.log(evt, data)
+		});
+
+		// editor.editing.view.document.on('selectionChangeDone', (evt, data) => {
+		// 	if (evt.source.selection._selection._ranges[0].end.offset != evt.source.selection._selection._ranges[0].start.offset) {
+		// 		let event = new CustomEvent("textSelectionDone");
+		// 		event.selectedText = { text: data.domSelection.focusNode.data.substring(evt.source.selection._selection._ranges[0].start.offset, evt.source.selection._selection._ranges[0].end.offset) };
+		// 		window.dispatchEvent(event);
+		// 	}
+		// });
 	}
 }
 
@@ -162,7 +175,8 @@ ClassicEditor.builtinPlugins = [
 	BalloonToolbar,
 	CustomDropdowm,
 	TextSelection,
-	WordCount
+	WordCount,
+	TotalWords
 ];
 
 // Editor configuration.
