@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "install:all": "npm install && npm run install:ckeditorcustom",
+    "install:ckeditorcustom": "cd src/app/aiCkEditor && npm install"
   },
   "private": true,
   "dependencies": {
@@ -22,10 +24,13 @@
     "@ckeditor/ckeditor5-angular": "^2.0.2",
     "@ckeditor/ckeditor5-build-balloon": "^29.2.0",
     "@ckeditor/ckeditor5-build-classic": "^29.2.0",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^29.2.0",
     "@tinymce/tinymce-angular": "^4.2.4",
     "@types/medium-editor": "^5.0.4",
     "@types/quill": "^2.0.9",
     "@types/tinymce": "^4.6.4",
+    "all": "0.0.0",
+    "ckeditor-custom": "^1.0.2",
     "jodit": "^3.7.2",
     "jodit-angular": "^1.11.3",
     "medium-editor": "^5.23.3",

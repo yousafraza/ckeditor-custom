@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import * as ClassicEditor from 'src/ckeditor.js';
+// import * as ClassicEditor from 'src/ckeditor.js';
+import * as ClassicEditor from 'src/app/aiCkEditor/build/ckeditor.js';
 
 @Component({
   selector: 'app-root',
@@ -60,6 +61,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public onChange( { editor }: ChangeEvent ) {
     const data = editor.getData();
-    console.log( data );
+    // console.log( data );
 }
 }

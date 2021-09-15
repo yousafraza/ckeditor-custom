@@ -1,0 +1,4 @@
+::ng-deep .ck.ck-editor {
+    display: flex;
+    flex-direction: column-reverse;
+}
